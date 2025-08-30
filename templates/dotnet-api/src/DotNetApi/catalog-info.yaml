@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+meta:
+  name: dotnet-api-template
+  title: Template de API .NET
+  description: Template moderno para APIs .NET com OpenTelemetry, Swagger, Docker e suporte a Azure Key Vault
+  tags:
+    - dotnet
+    - api
+    - azure
+    - kubernetes
+    - template
+    - poc
+  annotations:
+    github.com/project-slug: thiagoemsantos/platform-templates
+    backstage.io/techdocs-ref: url:./
+    backstage.io/source-location: url:https://github.com/thiagoemsantos/platform-templates/tree/main/templates/dotnet-api
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=dotnet-api-template'
+
+spec:
+  type: service
+  lifecycle: experimental
+  owner: user-plataforma
+  system: internal-platform
