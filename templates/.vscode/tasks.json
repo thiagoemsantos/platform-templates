@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-and-test",
+      "type": "shell",
+    "command": "dotnet build dotnet-api/src/DotNetApi/DotNetApiTemplate.csproj; dotnet test dotnet-api/tests/DotNetApi.Tests/DotNetApi.Tests.csproj",
+      "group": "build",
+      "problemMatcher": ["$msCompile"],
+      "presentation": {
+        "reveal": "always"
+      }
+    }
+  ]
+}

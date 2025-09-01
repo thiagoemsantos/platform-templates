@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNetApiTemplate</name>
+    </assembly>
+    <members>
+        <member name="T:DotNetApi.Application.DTOs.ApiErrorDto">
+            <summary>
+            DTO para retorno de erro em APIs.
+            </summary>
+        </member>
+        <member name="P:DotNetApi.Application.DTOs.ApiErrorDto.Error">
+            <example>Mensagem de erro detalhada.</example>
+        </member>
+        <member name="T:DotNetApi.Application.DTOs.CreateGreetingDto">
+            <summary>
+            DTO para criação de saudação.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Application.DTOs.GreetingDto">
+            <summary>
+            DTO para retorno de saudação.
+            </summary>
+        </member>
+        <member name="P:DotNetApi.Application.DTOs.GreetingDto.Message">
+            <example>Hello World!</example>
+        </member>
+        <member name="P:DotNetApi.Application.DTOs.GreetingDto.CreatedAt">
+            <example>2025-08-30T21:00:00Z</example>
+        </member>
+        <member name="T:DotNetApi.Application.DTOs.LinkDto">
+            <summary>
+            DTO para links HATEOAS.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Application.DTOs.PagedGreetingDto">
+            <summary>
+            DTO para resposta paginada de saudações.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Application.Services.GreetingLinksAssembler.BuildLinks(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Monta os links HATEOAS para paginação de saudações.
+            </summary>
+            <param name="page">Página atual</param>
+            <param name="pageSize">Itens por página</param>
+            <param name="totalItems">Total de itens</param>
+            <returns>Lista de links HATEOAS</returns>
+        </member>
+        <member name="T:DotNetApi.Application.Services.HelloService">
+            <summary>
+            Serviço de aplicação responsável pela lógica de negócio relacionada à saudação.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.GetLastGreetingAsync">
+            <summary>
+            Retorna a saudação mais recente ou null se não existir.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.GetGreetingByIdAsync(System.Int32)">
+            <summary>
+            Retorna a saudação pelo Id ou null se não existir.
+            </summary>
+            <param name="id">Id da saudação.</param>
+            <exception cref="T:System.ArgumentException">Se o Id for inválido.</exception>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.SaveGreetingAsync(DotNetApi.Domain.Entities.Greeting)">
+            <summary>
+            Orquestra a persistência de uma nova saudação, aplicando todas as validações e regras de negócio.
+            </summary>
+            <param name="greeting">Entidade Greeting a ser salva.</param>
+            <exception cref="T:System.ArgumentException">Se a mensagem for nula, vazia ou inválida.</exception>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.GetPagedGreetingsAsync(System.Int32,System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Retorna saudações paginadas, ordenadas e filtradas.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.GetAllGreetingsAsync">
+            <summary>
+            Retorna todas as saudações cadastradas.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.ValidateId(System.Int32)">
+            <summary>
+            Regra de negócio: Id deve ser maior que zero.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.ValidateGreetingNotNull(DotNetApi.Domain.Entities.Greeting)">
+            <summary>
+            Regra de negócio: Greeting não pode ser nulo.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.ValidateMessageNotEmpty(System.String)">
+            <summary>
+            Regra de negócio: Mensagem não pode ser nula ou vazia.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Application.Services.HelloService.ValidateMessageLength(System.String)">
+            <summary>
+            Regra de negócio: Mensagem não pode exceder 200 caracteres.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Controllers.HelloController">
+            <summary>
+            Controller responsável pelos endpoints de saudação.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Controllers.HelloController.GetPaged(System.Int32,System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Lista saudações com paginação, ordenação e filtro.
+            </summary>
+            <remarks>
+            <b>Exemplo de requisição:</b>
+            <code>
+            GET /api/v1/hello/list?page=1&amp;pageSize=10&amp;orderBy=CreatedAt&amp;desc=true&amp;filter=Olá
+            </code>
+            </remarks>
+            <param name="page">Número da página (default: 1)</param>
+            <param name="pageSize">Itens por página (default: 10)</param>
+            <param name="orderBy">Campo para ordenação: CreatedAt ou Message (default: CreatedAt)</param>
+            <param name="desc">Ordenação descendente? (default: true)</param>
+            <param name="filter">Filtro por mensagem (opcional)</param>
+            <returns>Lista paginada de GreetingDto com metadados e links HATEOAS.</returns>
+        </member>
+        <member name="M:DotNetApi.Controllers.HelloController.Get">
+            <summary>
+            Recupera a saudação mais recente.
+            </summary>
+            <returns>GreetingDto com mensagem e data.</returns>
+        </member>
+        <member name="M:DotNetApi.Controllers.HelloController.GetById(System.Int32)">
+            <summary>
+            Recupera uma saudação pelo ID.
+            </summary>
+            <param name="id">ID da saudação.</param>
+            <returns>GreetingDto com mensagem e data.</returns>
+        </member>
+        <member name="M:DotNetApi.Controllers.HelloController.Post(DotNetApi.Application.DTOs.CreateGreetingDto)">
+            <summary>
+            Cria uma nova saudação.
+            </summary>
+            <param name="dto">DTO contendo a mensagem.</param>
+            <returns>GreetingDto criado.</returns>
+        </member>
+        <member name="T:DotNetApi.Domain.Entities.Greeting">
+            <summary>
+            Entidade de saudação.
+            </summary>
+        </member>
+        <member name="P:DotNetApi.Domain.Entities.Greeting.Id">
+            <summary>
+            Identificador único da saudação.
+            </summary>
+        </member>
+        <member name="P:DotNetApi.Domain.Entities.Greeting.Message">
+            <summary>
+            Mensagem da saudação.
+            </summary>
+        </member>
+        <member name="P:DotNetApi.Domain.Entities.Greeting.CreatedAt">
+            <summary>
+            Data e hora de criação da saudação.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Domain.Interfaces.IGreetingRepository">
+            <summary>
+            Contrato para repositórios de persistência da entidade Greeting.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Domain.Interfaces.IGreetingRepository.GetLastGreetingAsync">
+            <summary>
+            Recupera a saudação mais recente.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Domain.Interfaces.IGreetingRepository.GetGreetingsAsync(System.Int32,System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Recupera saudações paginadas, ordenadas e filtradas.
+            </summary>
+            <param name="page">Página (1-based)</param>
+            <param name="pageSize">Itens por página</param>
+            <param name="orderBy">Campo para ordenação</param>
+            <param name="desc">Ordenação descendente?</param>
+            <param name="filter">Filtro por mensagem</param>
+            <returns>Lista paginada de saudações</returns>
+        </member>
+        <member name="M:DotNetApi.Domain.Interfaces.IGreetingRepository.GetGreetingByIdAsync(System.Int32)">
+            <summary>
+            Recupera uma saudação pelo seu identificador.
+            </summary>
+            <param name="id">O identificador da saudação.</param>
+            <returns>A saudação correspondente ao identificador.</returns>
+        </member>
+        <member name="M:DotNetApi.Domain.Interfaces.IGreetingRepository.SaveGreetingAsync(DotNetApi.Domain.Entities.Greeting)">
+            <summary>
+            Persiste uma nova saudação.
+            </summary>
+            <param name="greeting">A saudação a ser persistida.</param>
+        </member>
+        <member name="M:DotNetApi.Domain.Interfaces.IGreetingRepository.GetAllGreetingsAsync">
+            <summary>
+            Recupera todas as saudações cadastradas.
+            </summary>
+            <returns>Lista de todas as saudações.</returns>
+        </member>
+        <member name="T:DotNetApi.Extensions.BuilderExtensions">
+            <summary>
+            Métodos de extensão para configuração do builder e da aplicação.
+            Mantém o Program.cs limpo e orquestrador.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Extensions.BuilderExtensions.ConfigureKeyVault(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Configura o Azure Key Vault como fonte de configuração, se estiver definido.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Extensions.BuilderExtensions.ConfigureLogging(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Configura o Serilog para logging estruturado.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Extensions.BuilderExtensions.ConfigureServices(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Configura todos os serviços da aplicação, incluindo Swagger, HealthChecks, Observabilidade e Persistência.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Extensions.BuilderExtensions.ConfigureMiddleware(Microsoft.AspNetCore.Builder.WebApplication)">
+            <summary>
+            Configura os middlewares da aplicação.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository">
+            <summary>
+            Repositório de persistência para a entidade Greeting utilizando MongoDB.
+            Segue princípios SOLID e Clean Architecture, isolando a lógica de acesso ao banco.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository.#ctor(System.String,System.String)">
+            <summary>
+            Inicializa o repositório MongoDB com a string de conexão e nome do banco.
+            </summary>
+            <param name="connectionString">String de conexão do MongoDB.</param>
+            <param name="dbName">Nome do banco de dados.</param>
+            <exception cref="T:System.ArgumentNullException">Se a string de conexão ou nome do banco forem nulos ou vazios.</exception>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository.GetLastGreetingAsync">
+            <summary>
+            Recupera o Greeting mais recente do MongoDB.
+            </summary>
+            <returns>Entidade Greeting ou null se não houver registros.</returns>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository.SaveGreetingAsync(DotNetApi.Domain.Entities.Greeting)">
+            <summary>
+            Persiste uma nova entidade Greeting no MongoDB.
+            </summary>
+            <param name="greeting">Entidade Greeting a ser salva.</param>
+            <exception cref="T:System.ArgumentNullException">Se a entidade Greeting for nula.</exception>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository.GetGreetingByIdAsync(System.Int32)">
+            <summary>
+            Recupera uma entidade Greeting pelo Id.
+            </summary>
+            <param name="id">Id da saudação.</param>
+            <returns>Entidade Greeting ou null se não encontrada.</returns>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository.GetGreetingsAsync(System.Int32,System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Recupera saudações paginadas, ordenadas e filtradas do MongoDB.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository.GetAllGreetingsAsync">
+            <summary>
+            Recupera todas as saudações cadastradas.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository.ValidateConnectionParameters(System.String,System.String)">
+            <summary>
+            Regra de negócio: valida os parâmetros de conexão.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingMongoRepository.ValidateGreeting(DotNetApi.Domain.Entities.Greeting)">
+            <summary>
+            Regra de negócio: valida a entidade Greeting.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Infrastructure.Repositories.GreetingRepository">
+            <summary>
+            Repositório para a entidade Greeting.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingRepository.#ctor(System.String)">
+            <summary>
+            Construtor da classe GreetingRepository.
+            </summary>
+            <param name="connectionString">String de conexão com o banco de dados.</param>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingRepository.GetLastGreetingAsync">
+            <summary>
+            Recupera a última mensagem Greeting do banco de dados.
+            </summary>
+            <returns>Entidade Greeting com a mensagem mais recente.</returns>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingRepository.GetGreetingByIdAsync(System.Int32)">
+            <summary>
+            Recupera uma mensagem Greeting pelo seu identificador.
+            </summary>
+            <param name="id">Identificador da mensagem Greeting.</param>
+            <returns>Entidade Greeting correspondente ao identificador fornecido.</returns>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingRepository.SaveGreetingAsync(DotNetApi.Domain.Entities.Greeting)">
+            <summary>
+            Salva uma nova entidade Greeting no banco de dados.
+            </summary>
+            <param name="greeting">Entidade Greeting a ser salva.</param>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingRepository.GetGreetingsAsync(System.Int32,System.Int32,System.String,System.Boolean,System.String)">
+            <summary>
+            Recupera saudações paginadas, ordenadas e filtradas do SQLite.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingRepository.GetAllGreetingsAsync">
+            <summary>
+            Recupera todas as saudações cadastradas.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Infrastructure.Repositories.GreetingRepositoryFactory">
+            <summary>
+            Fábrica responsável por criar instâncias de IGreetingRepository com base na configuração.
+            Segue princípios SOLID e Clean Architecture ao abstrair a lógica de criação dos repositórios.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Infrastructure.Repositories.GreetingRepositoryFactory.Create(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{DotNetApi.Infrastructure.Repositories.GreetingSqlRepository},Microsoft.Extensions.Caching.Distributed.IDistributedCache)">
+            <summary>
+            Cria uma instância única de IGreetingRepository conforme o provider configurado.
+            </summary>
+            <param name="config">Configuração da aplicação.</param>
+            <param name="logger">Logger para o repositório SQL.</param>
+            <param name="cache">Cache distribuído para o repositório SQL.</param>
+            <returns>Implementação concreta de IGreetingRepository.</returns>
+            <exception cref="T:System.ArgumentNullException">Se o provider não for especificado.</exception>
+            <exception cref="T:System.NotSupportedException">Se o provider não for suportado.</exception>
+        </member>
+        <member name="T:DotNetApi.Infrastructure.Repositories.GreetingRepositoryPollyDecorator">
+            <summary>
+            Decorador para IGreetingRepository que aplica políticas Polly de resiliência.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Infrastructure.Repositories.GreetingSqlRepository">
+            <summary>
+            Repositório de persistência para a entidade Greeting utilizando SQLite.
+            Segue princípios SOLID e Clean Architecture, isolando a lógica de acesso ao banco.
+            </summary>
+        </member>
+        <member name="T:DotNetApi.Middlewares.CorrelationIdMiddleware">
+            <summary>
+            Middleware responsável por garantir e registrar o CorrelationId nas requisições HTTP.
+            Segue boas práticas de rastreabilidade e logging, enriquecendo os logs com informações relevantes.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Middlewares.CorrelationIdMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Inicializa o middleware com o próximo delegate da pipeline.
+            </summary>
+            <param name="next">Delegate da próxima etapa do pipeline.</param>
+        </member>
+        <member name="M:DotNetApi.Middlewares.CorrelationIdMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Executa a lógica do middleware: garante o CorrelationId, adiciona ao contexto e enriquece os logs.
+            </summary>
+            <param name="context">Contexto da requisição HTTP.</param>
+        </member>
+        <member name="T:DotNetApi.Middlewares.CorrelationIdMiddlewareExtensions">
+            <summary>
+            Extensão para registrar o CorrelationIdMiddleware na pipeline de requisições.
+            Facilita a configuração do middleware seguindo boas práticas de Clean Architecture.
+            </summary>
+        </member>
+        <member name="M:DotNetApi.Middlewares.CorrelationIdMiddlewareExtensions.UseCorrelationId(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Adiciona o CorrelationIdMiddleware à pipeline de requisições.
+            </summary>
+            <param name="builder">Application builder do ASP.NET Core.</param>
+            <returns>Application builder para encadeamento.</returns>
+        </member>
+    </members>
+</doc>
