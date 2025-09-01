@@ -2,7 +2,6 @@
 
 PoC de template para APIs .NET com boas práticas modernas, ideal para:
 
-- Plataformas phygital
 - Migração de Web Apps para Kubernetes
 - Observabilidade nativa
 - Segurança com Azure Key Vault
