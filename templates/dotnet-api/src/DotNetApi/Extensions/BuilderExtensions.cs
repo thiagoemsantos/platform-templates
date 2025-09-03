@@ -23,14 +23,23 @@ namespace DotNetApi.Extensions
         /// <summary>
         /// Configura o Azure Key Vault como fonte de configuração, se estiver definido.
         /// </summary>
-        public static WebApplicationBuilder ConfigureKeyVault(this WebApplicationBuilder builder)
+        public static WebApplicationBuilder ConfigureKeyVault(
+            this WebApplicationBuilder builder,
+            Func<IConfigurationBuilder, string, IConfigurationBuilder>? addKeyVault = null)
         {
             var keyVaultEndpoint = builder.Configuration["KeyVault:Endpoint"];
             if (!string.IsNullOrEmpty(keyVaultEndpoint))
             {
-                builder.Configuration.AddAzureKeyVault(
-                    new Uri(keyVaultEndpoint),
-                    new DefaultAzureCredential());
+                if (addKeyVault != null)
+                {
+                    addKeyVault(builder.Configuration as IConfigurationBuilder, keyVaultEndpoint);
+                }
+                else
+                {
+                    builder.Configuration.AddAzureKeyVault(
+                        new Uri(keyVaultEndpoint),
+                        new DefaultAzureCredential());
+                }
             }
             return builder;
         }

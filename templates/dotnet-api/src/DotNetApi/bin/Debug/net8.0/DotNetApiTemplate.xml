@@ -209,7 +209,7 @@
             Mantém o Program.cs limpo e orquestrador.
             </summary>
         </member>
-        <member name="M:DotNetApi.Extensions.BuilderExtensions.ConfigureKeyVault(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+        <member name="M:DotNetApi.Extensions.BuilderExtensions.ConfigureKeyVault(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.Func{Microsoft.Extensions.Configuration.IConfigurationBuilder,System.String,Microsoft.Extensions.Configuration.IConfigurationBuilder})">
             <summary>
             Configura o Azure Key Vault como fonte de configuração, se estiver definido.
             </summary>
